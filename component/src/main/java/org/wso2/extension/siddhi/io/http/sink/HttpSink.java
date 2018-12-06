@@ -71,13 +71,12 @@ import static org.wso2.extension.siddhi.io.http.util.HttpConstants.SOCKET_IDEAL_
  * {@code HttpSink } Handle the HTTP publishing tasks.
  */
 @Extension(name = "http", namespace = "sink",
-        description = "This extension publish the HTTP events in any HTTP method  POST, GET, PUT, DELETE  via HTTP " +
-                "or https protocols. As the additional features this component can provide basic authentication " +
-                "as well as user can publish events using custom client truststore files when publishing events " +
-                "via https protocol. And also user can add any number of headers including HTTP_METHOD header for " +
-                "each event dynamically.\n" +
-                "Following content types will be set by default according to the type of sink mapper used.\n" +
-                "You can override them by setting the new content types in headers.\n" +
+        description = "This extension publishes the HTTP events in any HTTP method which includes, 'POST', 'GET', " +
+                "'PUT'and 'DELETE' via HTTP or HTTPS protocols. It can also provide basic authentication. Users can" +
+                "also publish events using client truststore files via the HTTPS protocol. They can add a number" +
+                "of headers, including the HTTP_METHOD header, dynamically for each event.\n" +
+                "The following types will be set by default according to the type of the sink mapper used.\n" +
+                "You can override them by setting the new content types in the headers.\n" +
                 "     - TEXT : text/plain\n" +
                 "     - XML : application/xml\n" +
                 "     - JSON : application/json\n" +
@@ -86,28 +85,28 @@ import static org.wso2.extension.siddhi.io.http.util.HttpConstants.SOCKET_IDEAL_
                 @Parameter(
                         name = "publisher.url",
                         description = "The URL to which the outgoing events should be published via HTTP. " +
-                                "This is a mandatory parameter and if this is not specified, an error is logged in " +
-                                "the CLI. If user wants to enable SSL for the events, use `https` instead of `http` " +
-                                "in the publisher.url." +
+                                "This parameter is required since the absence of it results in an error being" +
+                                "logged in the CLI. If users want to enable SSL for the events, they should use `https` " +
+                                "instead of `http` in the publisher.url." +
                                 "e.g., " +
-                                "`http://localhost:8080/endpoint`, "
-                                + "`https://localhost:8080/endpoint`",
+                                "Use `https://localhost:8080/endpoint` instead of , " +
+                                + "`http://localhost:8080/endpoint`",
                         type = {DataType.STRING}),
                 @Parameter(
                         name = "basic.auth.username",
-                        description = "The username to be included in the authentication header of the basic " +
-                                "authentication enabled events. It is required to specify both username and " +
-                                "password to enable basic authentication. If one of the parameter is not given " +
-                                "by user then an error is logged in the CLI.",
+                        description = "The username to be included in the authentication header for the basic " +
+                                "authentication enabled events. It is required to specify both the username and " +
+                                "the password to enable basic authentication. If either of these parameters is " +
+                                "missing then an error is logged in the CLI.",
                         type = {DataType.STRING},
                         optional = true,
                         defaultValue = " "),
                 @Parameter(
                         name = "basic.auth.password",
-                        description = "The password to include in the authentication header of the basic " +
-                                "authentication enabled events. It is required to specify both username and " +
-                                "password to enable basic authentication. If one of the parameter is not given " +
-                                "by user then an error is logged in the CLI.",
+                        description = "The password to be included in the authentication header for the basic " +
+                                "authentication enabled events. It is required to specify both the username and " +
+                                "the password to enable basic authentication. If either of these parameters is " +
+                                "missing then an error is logged in the CLI.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = " "),
                 @Parameter(
@@ -121,36 +120,37 @@ import static org.wso2.extension.siddhi.io.http.util.HttpConstants.SOCKET_IDEAL_
                         name = "https.truststore.password",
                         description = "The password for the client-truststore. A custom password can be specified " +
                                 "if required. If no custom password is specified and the protocol of URL is 'https' " +
-                                "then, the system uses default password.",
+                                "then the system uses the default password.",
                         type = {DataType.STRING},
                         optional = true, defaultValue = "wso2carbon"),
                 @Parameter(
                         name = "headers",
                         description = "The headers that should be included as HTTP request headers. \n" +
-                                "There can be any number of headers concatenated in following format. " +
-                                "\"'header1:value1','header2:value2'\". User can include Content-Type header if he " +
-                                "needs to use a specific content-type for the payload. Or else, system decides the " +
-                                "Content-Type by considering the type of sink mapper, in following way.\n" +
+                                "There can be any number of headers concatenated in the following format. " +
+                                "\"'header1:value1','header2:value2'\". Users can include Content-Type header if " +
+                                "they need to use a specific content-type for the payload. " +
+                                "Or else, system decides the " +
+                                "Content-Type by considering the type of the sink mapper, as follows:\n" +
                                 " - @map(xml):application/xml\n" +
                                 " - @map(json):application/json\n" +
                                 " - @map(text):plain/text )\n" +
                                 " - if user does not include any mapping type then the system gets 'plain/text' " +
-                                "as default Content-Type header.\n" +
+                                "as the default Content-Type header.\n" +
                                 "Note that providing content-length as a header is not supported. The size of the " +
-                                "payload will be automatically calculated and included in the content-length header.",
+                                "payload will automatically be calculated and included in the content-length header.",
                         type = {DataType.STRING},
                         optional = true,
                         defaultValue = " "),
                 @Parameter(
                         name = "method",
                         description = "For HTTP events, HTTP_METHOD header should be included as a request header." +
-                                " If the parameter is null then system uses 'POST' as a default header.",
+                                " If the parameter is null then the system uses 'POST' as the default header.",
                         type = {DataType.STRING},
                         optional = true,
                         defaultValue = "POST"),
                 @Parameter(
                         name = "socket.idle.timeout",
-                        description = "Socket timeout value in millisecond",
+                        description = "The number of milliseconds after which the socket times out.",
                         type = {DataType.INT},
                         optional = true,
                         defaultValue = "6000"),
